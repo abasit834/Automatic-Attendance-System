@@ -1,11 +1,25 @@
 from tkinter import *
 from tkinter import ttk
+from PIL import Image, ImageTk
+from tkinter import messagebox
+import mysql.connector  
 
 class Students_Screen:
     def __init__(self, root):
         self.root = root
         self.root.geometry("1530x790+0+0")
         self.root.title("Students Enrollment")
+
+
+        # variables
+        self.var_name=StringVar()
+        self.var_roll_no=StringVar()
+        self.var_semester=StringVar()
+        self.var_gender=StringVar()
+        self.var_batch=StringVar()
+        self.var_course=StringVar()
+        self.var_department=StringVar()
+        self.var_dob=StringVar()
 
         self.canvas = Canvas(self.root, width=1530, height=790)
         self.canvas.pack()
@@ -18,28 +32,28 @@ class Students_Screen:
 
         label1=Label(self.canvas,text="Department",font=("Poppins",12,"bold"),fg="black")
         label1.place(x=200,y=120)
-        department = ttk.Combobox(self.canvas, font=("Poppins",10), width=17,state="readonly")
+        department = ttk.Combobox(self.canvas,textvariable=self.var_department, font=("Poppins",10), width=17,state="readonly")
         department["values"]=("Select Department","Computer Science","Electrical Eng","BBA")
         department.current(0)
         department.place(x=200, y=150) 
 
         label2=Label(self.canvas,text="Courses",font=("Poppins",12,"bold"),fg="black")
         label2.place(x=400,y=120)
-        courses = ttk.Combobox(self.canvas, font=("Poppins",10), width=17,state="readonly")
+        courses = ttk.Combobox(self.canvas,textvariable=self.var_course, font=("Poppins",10), width=17,state="readonly")
         courses["values"]=("Select Course","PF","OOP","ICT")
         courses.current(0)
         courses.place(x=400, y=150) 
 
         label3=Label(self.canvas,text="Batch",font=("Poppins",12,"bold"),fg="black")
         label3.place(x=200,y=220)
-        batch = ttk.Combobox(self.canvas, font=("Poppins",10), width=17,state="readonly")
+        batch = ttk.Combobox(self.canvas,textvariable=self.var_batch, font=("Poppins",10), width=17,state="readonly")
         batch["values"]=("Select Batch","FA21","SP22","FA23","SP23","FA23","SP24")
         batch.current(0)
         batch.place(x=200, y=250) 
 
         label4=Label(self.canvas,text="Semester",font=("Poppins",12,"bold"),fg="black")
         label4.place(x=400,y=220)
-        semester = ttk.Combobox(self.canvas, font=("Poppins",10), width=17,state="readonly")
+        semester = ttk.Combobox(self.canvas,textvariable=self.var_semester, font=("Poppins",10), width=17,state="readonly")
         semester["values"]=("Select Semester","1","2","3","4","5","6","7","8")
         semester.current(0)
         semester.place(x=400, y=250) 
@@ -49,25 +63,25 @@ class Students_Screen:
         id_label=Label(self.canvas,text="Roll No",font=("Poppins",12,"bold"),fg="black")
         id_label.place(x=200,y=320)
 
-        idText=ttk.Entry(self.canvas,width=20,font=("Poppins",13))
+        idText=ttk.Entry(self.canvas,textvariable=self.var_roll_no,width=20,font=("Poppins",13))
         idText.place(x=200,y=350)
 
         name_label=Label(self.canvas,text="Student Name",font=("Poppins",12,"bold"),fg="black")
         name_label.place(x=500,y=320)
 
-        nameText=ttk.Entry(self.canvas,width=20,font=("Poppins",13),)
+        nameText=ttk.Entry(self.canvas,textvariable=self.var_name,width=20,font=("Poppins",13),)
         nameText.place(x=500,y=350)
 
         dob_label=Label(self.canvas,text="DOB",font=("Poppins",12,"bold"),fg="black")
         dob_label.place(x=200,y=420)
 
-        dobText=ttk.Entry(self.canvas,width=20,font=("Poppins",13))
+        dobText=ttk.Entry(self.canvas,textvariable=self.var_dob,width=20,font=("Poppins",13))
         dobText.place(x=200,y=450)
         
 
         label5=Label(self.canvas,text="Gender",font=("Poppins",12,"bold"),fg="black")
         label5.place(x=500,y=420)
-        gender = ttk.Combobox(self.canvas, font=("Poppins",10), width=25,height=28,state="readonly")
+        gender = ttk.Combobox(self.canvas,textvariable=self.var_gender, font=("Poppins",10), width=25,height=28,state="readonly")
         gender["values"]=("Select Gender","Male","Female")
         gender.current(0)
         gender.place(x=500,y=450)
@@ -75,11 +89,46 @@ class Students_Screen:
 
         # Buttons
 
-        savebtn=Button(self.canvas,text="Save",font=("Poppins",13,"bold"),width=12,bg="#088F8F",fg="white")  
-        savebtn.place(x=400,y=550)
+        savebtn=Button(self.canvas,text="Save",command=self.add_student,font=("Poppins",13,"bold"),width=12,bg="#088F8F",fg="white")  
+        savebtn.place(x=600,y=550)
 
         picbtn=Button(self.canvas,text="Take Picture",font=("Poppins",13,"bold"),width=12,bg="#088F8F",fg="white")  
         picbtn.place(x=200,y=550)
+
+
+        updbtn=Button(self.canvas,text="Update Picture",font=("Poppins",13,"bold"),width=15,bg="#088F8F",fg="white")
+        updbtn.place(x=383,y=550)
+    
+
+    def add_student(self):
+        if self.var_department.get()=="Select Department" or self.var_name.get()=="" or self.var_batch.get()=="Select Batch" or self.var_semester.get()=="Select Semester" or self.var_course.get()=="Select Course" or self.var_roll_no.get()=="" or self.var_dob.get()=="" or self.var_gender.get()=="":
+            messagebox.showerror("Error","All Fields are required",parent=self.root)
+        else:
+            self.var_name.set("")
+            self.var_roll_no.set("")
+            self.var_semester.set("Select Semester")
+            self.var_gender.set("")
+            self.var_batch.set("Select Batch")
+            self.var_course.set("Select Course")
+            self.var_department.set("Select Department")
+            self.var_dob.set("")
+
+        # add student icon
+
+        # img=Image.open("add-user.png")
+        # img = img.resize((150, 150))  # Resize the img
+        # self.icon = ImageTk.PhotoImage(img)  # Convert the img to Tkinter PhotoImage
+        # add_student_icon = Label(self.canvas, image=self.icon)
+        # add_student_icon.place(x=1000, y=150)
+
+
+    
+
+        
+
+
+
+
 
 
 if __name__ == "__main__": 

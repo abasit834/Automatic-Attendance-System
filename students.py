@@ -113,6 +113,21 @@ class Students_Screen:
             self.var_department.set("Select Department")
             self.var_dob.set("")
 
+            try:
+                dbConnection=mysql.connector.connect(host="localhost",username="root",password="root",database="Automatic_Attendance")
+                cursor=dbConnection.cursor()
+                cursor.execute("INSERT INTO Students VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s)",(self.var_department.get(),self.var_batch.get(),self.var_course.get(),self.var_dob.get(),self.var_gender.get(),self.var_name.get(),self.var_roll_no.get(),self.var_semester.get()))
+                dbConnection.commit()
+                dbConnection.close()
+                messagebox.showinfo("Success","Student Added Successfully",parent=self.root)
+       
+            except Exception as es:
+                messagebox.showerror("Error",f"Due to :{str(es)}",parent=self.root)
+       
+       
+       
+       
+       
         # add student icon
 
         # img=Image.open("add-user.png")

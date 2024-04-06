@@ -90,16 +90,19 @@ class Students_Screen:
         # Buttons
 
         savebtn=Button(self.canvas,text="Save",command=self.add_student,font=("Poppins",13,"bold"),width=12,bg="#088F8F",fg="white")  
-        savebtn.place(x=600,y=550)
+        savebtn.place(x=535,y=550)
 
         picbtn=Button(self.canvas,text="Take Picture",font=("Poppins",13,"bold"),width=12,bg="#088F8F",fg="white")  
         picbtn.place(x=200,y=550)
 
 
         updbtn=Button(self.canvas,text="Update Picture",font=("Poppins",13,"bold"),width=15,bg="#088F8F",fg="white")
-        updbtn.place(x=383,y=550)
-    
+        updbtn.place(x=350,y=550)
 
+        clear_fields=Button(self.canvas,text="Clear Fields",command=self.clearFields,font=("Poppins",13,"bold"),width=12,bg="#088F8F",fg="white")
+        clear_fields.place(x=685,y=550)
+    
+    # Functions
     def add_student(self):
         if self.var_department.get()=="Select Department" or self.var_name.get()=="" or self.var_batch.get()=="Select Batch" or self.var_semester.get()=="Select Semester" or self.var_course.get()=="Select Course" or self.var_roll_no.get()=="" or self.var_dob.get()=="" or self.var_gender.get()=="":
             messagebox.showerror("Error","All Fields are required",parent=self.root)
@@ -107,25 +110,37 @@ class Students_Screen:
             self.var_name.set("")
             self.var_roll_no.set("")
             self.var_semester.set("Select Semester")
-            self.var_gender.set("")
+            self.var_gender.set("Select Gender")
             self.var_batch.set("Select Batch")
             self.var_course.set("Select Course")
             self.var_department.set("Select Department")
             self.var_dob.set("")
 
             try:
-                dbConnection=mysql.connector.connect(host="localhost",username="root",password="root",database="Automatic_Attendance")
+                dbConnection=mysql.connector.connect(host="localhost",port="3307",username="root",password="root",database="Automatic_Attendance")
                 cursor=dbConnection.cursor()
-                cursor.execute("INSERT INTO Students VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s)",(self.var_department.get(),self.var_batch.get(),self.var_course.get(),self.var_dob.get(),self.var_gender.get(),self.var_name.get(),self.var_roll_no.get(),self.var_semester.get()))
+                cursor.execute("INSERT INTO Students VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s)",(self.var_name.get(),self.var_roll_no.get(),self.var_semester.get(),self.var_gender.get(),self.var_batch.get(),self.var_course.get(),self.var_department.get(),self.var_dob.get(),""))
                 dbConnection.commit()
                 dbConnection.close()
+
                 messagebox.showinfo("Success","Student Added Successfully",parent=self.root)
-       
+    
             except Exception as es:
                 messagebox.showerror("Error",f"Due to :{str(es)}",parent=self.root)
        
        
-       
+    def clearFields(self):
+            if self.var_department.get()=="Select Department" and self.var_name.get()=="" and self.var_batch.get()=="Select Batch" and self.var_semester.get()=="Select Semester" and self.var_course.get()=="Select Course" and self.var_roll_no.get()=="" and self.var_dob.get()=="" and self.var_gender.get()=="":
+               messagebox.showerror("Error","All Fields are already cleared",parent=self.root)
+            else :
+                self.var_name.set("")
+                self.var_roll_no.set("")
+                self.var_semester.set("Select Semester")
+                self.var_gender.set("Select Gender")
+                self.var_batch.set("Select Batch")
+                self.var_course.set("Select Course")
+                self.var_department.set("Select Department")
+                self.var_dob.set("")
        
        
         # add student icon

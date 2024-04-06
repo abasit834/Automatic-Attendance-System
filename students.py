@@ -107,15 +107,6 @@ class Students_Screen:
         if self.var_department.get()=="Select Department" or self.var_name.get()=="" or self.var_batch.get()=="Select Batch" or self.var_semester.get()=="Select Semester" or self.var_course.get()=="Select Course" or self.var_roll_no.get()=="" or self.var_dob.get()=="" or self.var_gender.get()=="":
             messagebox.showerror("Error","All Fields are required",parent=self.root)
         else:
-            self.var_name.set("")
-            self.var_roll_no.set("")
-            self.var_semester.set("Select Semester")
-            self.var_gender.set("Select Gender")
-            self.var_batch.set("Select Batch")
-            self.var_course.set("Select Course")
-            self.var_department.set("Select Department")
-            self.var_dob.set("")
-
             try:
                 dbConnection=mysql.connector.connect(host="localhost",port="3307",username="root",password="root",database="Automatic_Attendance")
                 cursor=dbConnection.cursor()
@@ -123,15 +114,25 @@ class Students_Screen:
                 dbConnection.commit()
                 dbConnection.close()
 
+                self.var_name.set("")
+                self.var_roll_no.set("")
+                self.var_semester.set("Select Semester")
+                self.var_gender.set("Select Gender")
+                self.var_batch.set("Select Batch")
+                self.var_course.set("Select Course")
+                self.var_department.set("Select Department")
+                self.var_dob.set("")
+
                 messagebox.showinfo("Success","Student Added Successfully",parent=self.root)
     
             except Exception as es:
                 messagebox.showerror("Error",f"Due to :{str(es)}",parent=self.root)
+
        
        
     def clearFields(self):
-            if self.var_department.get()=="Select Department" and self.var_name.get()=="" and self.var_batch.get()=="Select Batch" and self.var_semester.get()=="Select Semester" and self.var_course.get()=="Select Course" and self.var_roll_no.get()=="" and self.var_dob.get()=="" and self.var_gender.get()=="":
-               messagebox.showerror("Error","All Fields are already cleared",parent=self.root)
+            if self.var_department.get()=="Select Department" and self.var_name.get()=="" and self.var_batch.get()=="Select Batch" and self.var_semester.get()=="Select Semester" and self.var_course.get()=="Select Course" and self.var_roll_no.get()=="" and self.var_dob.get()=="" and self.var_gender.get()=="Select Gender":
+              messagebox.showinfo("Error","All Fields are already cleared",parent=self.root)
             else :
                 self.var_name.set("")
                 self.var_roll_no.set("")

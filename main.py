@@ -6,6 +6,7 @@ class Automatic_Attendance_System :
         self.root=root
         self.root.geometry("1530x790+0+0")
         self.root.title("Automatic Attendance System")
+        self
 
 
 if __name__ == "__main__":

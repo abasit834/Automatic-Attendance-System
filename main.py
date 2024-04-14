@@ -10,7 +10,7 @@ class Face_Recognition_System:
         self.root.geometry("1530x790+0+0")
         self.root.title("FACE RECOGNITION SYSTEM")
 
-        img = Image.open(r"C:\Users\Fahad Ashfaq\Downloads\AMS.jpeg")
+        img = Image.open(r"AMS.jpeg")
         img = img.resize((1530, 790))  # Resize the image to fit window
         self.photoimg = ImageTk.PhotoImage(img)
 

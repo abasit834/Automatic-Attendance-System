@@ -3,10 +3,11 @@ from tkinter import ttk
 from PIL import Image, ImageTk
 from tkinter import messagebox
 import mysql.connector  
+import cv2
 
 
 class Students_Screen:
-    def __init__(self, root):
+    def _init_(self, root):
         self.root = root
         self.root.geometry("1530x790+0+0")
         self.root.title("Students Enrollment")
@@ -162,6 +163,31 @@ class Students_Screen:
                 cursor.execute("select * from student")
                 my_result=cursor.fetchall()
                 id=0
+                for x in my_result:
+                    id+=1
+                
+                #=====load data on face frontals from cv======
+                
+                face_classifier=cv2.CascadeClassifier("haarcascade_frontalface_default.xml")
+
+                def face_cropped(img):
+                    gray=cv2.cvtColor(img,cv2.COLOR_BRG2GRAY)
+                    faces=face_classifier.detectMultiScale(gray,1.3,5)
+
+                    for(x,y,w,y) in faces:
+                        face_cropped=img[y:y+h,x:x+w]
+                        return face_cropped
+                    
+                
+                cap=cv2.VideoCapture(0)
+                img_id=0
+                while True:
+                    ret,my_frame=cap.read()
+                    if face_cropped(my_frame) is not None:
+                        img_id+=1
+                        face=cv2.resize(face_cropped(my_frame),(450,450))
+                        face=cv2.cvtColor(face,cv2.COLOR_BGR2GRAY)
+                        file_name_path="data/user."+str(id)+"."+str(img_id)+".jpg"
 
             except Exception as es:
                 messagebox.showerror("Error",f"Due to :{str(es)}",parent=self.root)
@@ -175,7 +201,7 @@ class Students_Screen:
 
 
 
-if __name__ == "__main__": 
+if _name_ == "_main_": 
     root = Tk()
     obj = Students_Screen(root)
     root.mainloop()

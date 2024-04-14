@@ -7,7 +7,7 @@ import cv2
 
 
 class Students_Screen:
-    def _init_(self, root):
+    def __init__(self, root):
         self.root = root
         self.root.geometry("1530x790+0+0")
         self.root.title("Students Enrollment")
@@ -94,7 +94,7 @@ class Students_Screen:
         savebtn=Button(self.canvas,text="Save",command=self.add_student,font=("Poppins",13,"bold"),width=12,bg="#088F8F",fg="white")  
         savebtn.place(x=535,y=550)
 
-        picbtn=Button(self.canvas,text="Take Picture",font=("Poppins",13,"bold"),width=12,bg="#088F8F",fg="white")  
+        picbtn=Button(self.canvas,text="Take Picture",command=self.generateDataSet,font=("Poppins",13,"bold"),width=12,bg="#088F8F",fg="white")  
         picbtn.place(x=200,y=550)
 
 
@@ -154,13 +154,11 @@ class Students_Screen:
         # add_student_icon = Label(self.canvas, image=self.icon)
         # add_student_icon.place(x=1000, y=150)
     def generateDataSet(self):
-        if self.var_department.get()=="Select Department" or self.var_name.get()=="" or self.var_batch.get()=="Select Batch" or self.var_semester.get()=="Select Semester" or self.var_course.get()=="Select Course" or self.var_roll_no.get()=="" or self.var_dob.get()=="" or self.var_gender.get()=="":
-            messagebox.showerror("Error","All Fields are required",parent=self.root)
-        else:
+                
             try:
                 dbConnection=mysql.connector.connect(host="localhost",port="3307",username="root",password="root",database="Automatic_Attendance")
                 cursor=dbConnection.cursor()
-                cursor.execute("select * from student")
+                cursor.execute("select * from students")
                 my_result=cursor.fetchall()
                 id=0
                 for x in my_result:
@@ -171,10 +169,10 @@ class Students_Screen:
                 face_classifier=cv2.CascadeClassifier("haarcascade_frontalface_default.xml")
 
                 def face_cropped(img):
-                    gray=cv2.cvtColor(img,cv2.COLOR_BRG2GRAY)
+                    gray=cv2.cvtColor(img,cv2.COLOR_BAYER_BG2BGR)
                     faces=face_classifier.detectMultiScale(gray,1.3,5)
 
-                    for(x,y,w,y) in faces:
+                    for(x,y,w,h) in faces:
                         face_cropped=img[y:y+h,x:x+w]
                         return face_cropped
                     
@@ -186,11 +184,21 @@ class Students_Screen:
                     if face_cropped(my_frame) is not None:
                         img_id+=1
                         face=cv2.resize(face_cropped(my_frame),(450,450))
-                        face=cv2.cvtColor(face,cv2.COLOR_BGR2GRAY)
+                        face=cv2.cvtColor(face,cv2.COLOR_BAYER_BG2BGR)
                         file_name_path="data/user."+str(id)+"."+str(img_id)+".jpg"
-
+                        cv2.imwrite(file_name_path,face)
+                        cv2.putText(face,str(img_id),(50,50),cv2.FONT_HERSHEY_COMPLEX,2,(0,255,0),2)
+                        cv2.imshow("Cropped Face",face)
+                        if cv2.waitKey(1)==13 or int(img_id)==100:
+                            break
+                    cap.release()    
+                    cv2.destroyAllWindows()
+                    messagebox.showinfo("Result","Generating Dataset Completed!")
+            
             except Exception as es:
                 messagebox.showerror("Error",f"Due to :{str(es)}",parent=self.root)
+
+
 
     
 
@@ -201,7 +209,7 @@ class Students_Screen:
 
 
 
-if _name_ == "_main_": 
+if __name__ == "__main__":
     root = Tk()
     obj = Students_Screen(root)
     root.mainloop()

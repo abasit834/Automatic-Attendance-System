@@ -152,7 +152,19 @@ class Students_Screen:
         # self.icon = ImageTk.PhotoImage(img)  # Convert the img to Tkinter PhotoImage
         # add_student_icon = Label(self.canvas, image=self.icon)
         # add_student_icon.place(x=1000, y=150)
+    def generateDataSet(self):
+        if self.var_department.get()=="Select Department" or self.var_name.get()=="" or self.var_batch.get()=="Select Batch" or self.var_semester.get()=="Select Semester" or self.var_course.get()=="Select Course" or self.var_roll_no.get()=="" or self.var_dob.get()=="" or self.var_gender.get()=="":
+            messagebox.showerror("Error","All Fields are required",parent=self.root)
+        else:
+            try:
+                dbConnection=mysql.connector.connect(host="localhost",port="3307",username="root",password="root",database="Automatic_Attendance")
+                cursor=dbConnection.cursor()
+                cursor.execute("select * from student")
+                my_result=cursor.fetchall()
+                id=0
 
+            except Exception as es:
+                messagebox.showerror("Error",f"Due to :{str(es)}",parent=self.root)
 
     
 

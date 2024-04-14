@@ -17,7 +17,7 @@ class Face_Recognition_System:
         bg_img = Label(self.root, image=self.photoimg)
         bg_img.place(x=0, y=0, relwidth=1, relheight=1)
 
-        title_lbl=Label(self.root, text="FACE RECOGNITION ATTENDANCE SYSTEM", font=("times new roman", 35, "bold"), bg="light blue", fg="black")
+        title_lbl=Label(self.root, text="FACE RECOGNITION ATTENDANCE SYSTEM", font=("Poppins", 35, "bold"), bg="light blue", fg="black")
         title_lbl.place(x=0, y=0, width=1530, height=45)
 
         #student button
@@ -29,7 +29,7 @@ class Face_Recognition_System:
         b1.place(x=200,y=100,width=220,height=220) 
 
         
-        b1= Button(bg_img,text="Student Details",command=self.student_details,cursor="hand2",font=("times new roman", 15, "bold"), bg="light blue", fg="black")
+        b1= Button(bg_img,text="Student Details",command=self.student_details,cursor="hand2",font=("Poppins", 15, "bold"), bg="light blue", fg="black")
         b1.place(x=200,y=300,width=220,height=40) 
 
 
@@ -43,7 +43,7 @@ class Face_Recognition_System:
         b1.place(x=500,y=100,width=220,height=220) 
 
         
-        b1= Button(bg_img,text="Face Detector",cursor="hand2",font=("times new roman", 15, "bold"), bg="light blue", fg="black")
+        b1= Button(bg_img,text="Face Detector",cursor="hand2",font=("Poppins", 15, "bold"), bg="light blue", fg="black")
         b1.place(x=500,y=300,width=220,height=40) 
 
 
@@ -56,12 +56,12 @@ class Face_Recognition_System:
         b1.place(x=800,y=100,width=220,height=220) 
 
         
-        b1= Button(bg_img,text="Attendance",cursor="hand2",font=("times new roman", 15, "bold"), bg="light blue", fg="black")
+        b1= Button(bg_img,text="Attendance",cursor="hand2",font=("Poppins", 15, "bold"), bg="light blue", fg="black")
         b1.place(x=800,y=300,width=220,height=40) 
 
 
          #help button
-        img4 = Image.open(r"help.png")
+        img4 = Image.open(r"C:\Users\Fahad Ashfaq\Downloads\help.png")
         img4 = img4.resize((220, 220))  # Resize the image to fit window
         self.photoimg4 = ImageTk.PhotoImage(img4)
 
@@ -69,7 +69,7 @@ class Face_Recognition_System:
         b1.place(x=1100,y=100,width=220,height=220) 
 
         
-        b1= Button(bg_img,text="Help Desk",cursor="hand2",font=("times new roman", 15, "bold"), bg="light blue", fg="black")
+        b1= Button(bg_img,text="Help Desk",cursor="hand2",font=("Poppins", 15, "bold"), bg="light blue", fg="black")
         b1.place(x=1100,y=300,width=220,height=40)
 
 
@@ -82,7 +82,7 @@ class Face_Recognition_System:
         b1.place(x=200,y=380,width=220,height=220) 
 
         
-        b1= Button(bg_img,text="Train Data",cursor="hand2",font=("times new roman", 15, "bold"), bg="light blue", fg="black")
+        b1= Button(bg_img,text="Train Data",cursor="hand2",font=("Poppins", 15, "bold"), bg="light blue", fg="black")
         b1.place(x=200,y=580,width=220,height=40) 
 
 
@@ -95,7 +95,7 @@ class Face_Recognition_System:
         b1.place(x=500,y=380,width=220,height=220) 
 
         
-        b1= Button(bg_img,text="Photos",cursor="hand2",font=("times new roman", 15, "bold"), bg="light blue", fg="black")
+        b1= Button(bg_img,text="Photos",cursor="hand2",font=("Poppins", 15, "bold"), bg="light blue", fg="black")
         b1.place(x=500,y=580,width=220,height=40) 
 
 
@@ -108,7 +108,7 @@ class Face_Recognition_System:
         b1.place(x=800,y=380,width=220,height=220) 
 
         
-        b1= Button(bg_img,text="Developer",cursor="hand2",font=("times new roman", 15, "bold"), bg="light blue", fg="black")
+        b1= Button(bg_img,text="Developer",cursor="hand2",font=("Poppins", 15, "bold"), bg="light blue", fg="black")
         b1.place(x=800,y=580,width=220,height=40) 
 
 
@@ -121,7 +121,7 @@ class Face_Recognition_System:
         b1.place(x=1100,y=380,width=220,height=220) 
 
         
-        b1= Button(bg_img,text="Exit",cursor="hand2",font=("times new roman", 15, "bold"), bg="light blue", fg="black")
+        b1= Button(bg_img,text="Exit",cursor="hand2",font=("Poppins", 15, "bold"), bg="light blue", fg="black")
         b1.place(x=1100,y=580,width=220,height=40) 
 
 

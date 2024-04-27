@@ -2,6 +2,7 @@ from tkinter import *
 from tkinter import ttk
 from PIL import Image, ImageTk
 from students import Students_Screen
+import os
 
 
 class Face_Recognition_System:
@@ -10,7 +11,7 @@ class Face_Recognition_System:
         self.root.geometry("1530x790+0+0")
         self.root.title("FACE RECOGNITION SYSTEM")
 
-        img = Image.open(r"AMS.jpeg")
+        img = Image.open(r"C:\Users\Fahad Ashfaq\Downloads\AMS.jpeg")
         img = img.resize((1530, 790))  # Resize the image to fit window
         self.photoimg = ImageTk.PhotoImage(img)
 
@@ -21,7 +22,7 @@ class Face_Recognition_System:
         title_lbl.place(x=0, y=0, width=1530, height=45)
 
         #student button
-        img = Image.open(r"student.jpg")
+        img = Image.open(r"C:\Users\Fahad Ashfaq\Downloads\student.jpg")
         img = img.resize((220, 220))  # Resize the image to fit window
         self.photoimg = ImageTk.PhotoImage(img)
 
@@ -35,7 +36,7 @@ class Face_Recognition_System:
 
         
          #Detect Face button
-        img2 = Image.open(r"faceDetect.jpg")
+        img2 = Image.open(r"C:\Users\Fahad Ashfaq\Downloads\faceDetect.jpg")
         img2 = img2.resize((220, 220))  # Resize the image to fit window
         self.photoimg2 = ImageTk.PhotoImage(img2)
 
@@ -48,7 +49,7 @@ class Face_Recognition_System:
 
 
         #Attendance button
-        img3 = Image.open(r"attendance.png")
+        img3 = Image.open(r"C:\Users\Fahad Ashfaq\Downloads\attendance.png")
         img3 = img3.resize((220, 220))  # Resize the image to fit window
         self.photoimg3 = ImageTk.PhotoImage(img3)
 
@@ -61,7 +62,7 @@ class Face_Recognition_System:
 
 
          #help button
-        img4 = Image.open(r"help.png")
+        img4 = Image.open(r"C:\Users\Fahad Ashfaq\Downloads\help.png")
         img4 = img4.resize((220, 220))  # Resize the image to fit window
         self.photoimg4 = ImageTk.PhotoImage(img4)
 
@@ -74,7 +75,7 @@ class Face_Recognition_System:
 
 
          #Train button
-        img5 = Image.open(r"trainData.png")
+        img5 = Image.open(r"C:\Users\Fahad Ashfaq\Downloads\trainData.png")
         img5 = img5.resize((220, 220))  # Resize the image to fit window
         self.photoimg5 = ImageTk.PhotoImage(img5)
 
@@ -87,20 +88,20 @@ class Face_Recognition_System:
 
 
         #Photos button
-        img6 = Image.open(r"photos.png")
+        img6 = Image.open(r"C:\Users\Fahad Ashfaq\Downloads\photos.png")
         img6 = img6.resize((220, 220))  # Resize the image to fit window
         self.photoimg6 = ImageTk.PhotoImage(img6)
 
-        b1= Button(bg_img,image=self.photoimg6,cursor="hand2")
+        b1= Button(bg_img,image=self.photoimg6,cursor="hand2",command=self.open_img)
         b1.place(x=500,y=380,width=220,height=220) 
 
         
-        b1= Button(bg_img,text="Photos",cursor="hand2",font=("times new roman", 15, "bold"), bg="light blue", fg="black")
+        b1= Button(bg_img,text="Photos",command=self.open_img,cursor="hand2",font=("times new roman", 15, "bold"), bg="light blue", fg="black")
         b1.place(x=500,y=580,width=220,height=40) 
 
 
         #Developer button
-        img7 = Image.open(r"developer.jpg")
+        img7 = Image.open(r"C:\Users\Fahad Ashfaq\Downloads\developer.jpg")
         img7 = img7.resize((220, 220))  # Resize the image to fit window
         self.photoimg7 = ImageTk.PhotoImage(img7)
 
@@ -113,7 +114,7 @@ class Face_Recognition_System:
 
 
          #Exit button
-        img8 = Image.open(r"exit.jpg")
+        img8 = Image.open(r"C:\Users\Fahad Ashfaq\Downloads\exit.jpg")
         img8 = img8.resize((220, 220))  # Resize the image to fit window
         self.photoimg8 = ImageTk.PhotoImage(img8)
 
@@ -123,6 +124,11 @@ class Face_Recognition_System:
         
         b1= Button(bg_img,text="Exit",cursor="hand2",font=("times new roman", 15, "bold"), bg="light blue", fg="black")
         b1.place(x=1100,y=580,width=220,height=40) 
+
+
+
+    def open_img(self):
+          os.startfile("data")
 
 
 # function buttons
@@ -138,4 +144,5 @@ if __name__ == "__main__":
     obj = Face_Recognition_System(root)
     root.mainloop()
 
+ 
 

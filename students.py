@@ -6,6 +6,7 @@ import mysql.connector
 import cv2
 
 
+
 class Students_Screen:
     def __init__(self, root):
         self.root = root
@@ -191,6 +192,12 @@ class Students_Screen:
             
             except Exception as es:
                 messagebox.showerror("Error",f"Due to :{str(es)}",parent=self.root)
+
+
+
+    
+
+        
 
 
 

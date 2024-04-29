@@ -4,6 +4,7 @@ from PIL import Image, ImageTk
 from tkinter import messagebox
 import mysql.connector  
 import cv2
+import datetime
 
 
 
@@ -13,11 +14,12 @@ class Students_Screen:
         self.root.geometry("1530x790+0+0")
         self.root.title("Students Enrollment")
 
-
+        
+        self.status=False
         # variables
         self.var_name=StringVar()
         self.var_roll_no=StringVar()
-        self.var_semester=StringVar()
+        self.var_section=StringVar()
         self.var_gender=StringVar()
         self.var_batch=StringVar()
         self.var_course=StringVar()
@@ -54,12 +56,12 @@ class Students_Screen:
         batch.current(0)
         batch.place(x=200, y=250) 
 
-        label4=Label(self.canvas,text="Semester",font=("Poppins",12,"bold"),fg="black")
+        label4=Label(self.canvas,text="Section",font=("Poppins",12,"bold"),fg="black")
         label4.place(x=400,y=220)
-        semester = ttk.Combobox(self.canvas,textvariable=self.var_semester, font=("Poppins",10), width=17,state="readonly")
-        semester["values"]=("Select Semester","1","2","3","4","5","6","7","8")
-        semester.current(0)
-        semester.place(x=400, y=250) 
+        section = ttk.Combobox(self.canvas,textvariable=self.var_section, font=("Poppins",10), width=17,state="readonly")
+        section["values"]=("Select Section","A","B","C","D")
+        section.current(0)
+        section.place(x=400, y=250) 
 
         # Student Information
 
@@ -107,19 +109,22 @@ class Students_Screen:
     
     # Functions
     def add_student(self):
-        if self.var_department.get()=="Select Department" or self.var_name.get()=="" or self.var_batch.get()=="Select Batch" or self.var_semester.get()=="Select Semester" or self.var_course.get()=="Select Course" or self.var_roll_no.get()=="" or self.var_dob.get()=="" or self.var_gender.get()=="":
+        if self.var_department.get()=="Select Department" or self.var_name.get()=="" or self.var_batch.get()=="Select Batch" or self.var_section.get()=="Select Section" or self.var_course.get()=="Select Course" or self.var_roll_no.get()=="" or self.var_dob.get()=="" or self.var_gender.get()=="":
             messagebox.showerror("Error","All Fields are required",parent=self.root)
-        else:
+        elif self.status == True :
             try:
                 dbConnection=mysql.connector.connect(host="localhost",port="3307",username="root",password="root",database="Automatic_Attendance")
                 cursor=dbConnection.cursor()
-                cursor.execute("INSERT INTO Students VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s)",(self.var_name.get(),self.var_roll_no.get(),self.var_semester.get(),self.var_gender.get(),self.var_batch.get(),self.var_course.get(),self.var_department.get(),self.var_dob.get(),""))
+                cursor.execute("INSERT INTO Students VALUES(%s,%s,%s,%s,%s,%s,%s,%s)",(self.var_name.get(),self.var_roll_no.get(),self.var_section.get(),self.var_gender.get(),self.var_batch.get(),self.var_course.get(),self.var_department.get(),self.var_dob.get()))
+                current_date = datetime.date.today()
+                current_time = datetime.datetime.now().time()
+                cursor.execute("INSERT INTO Attendance (time, date, status, roll_no, course_name,batch,department,section) VALUES (%s, %s, %s, %s, %s,%s,%s,%s)", (current_time, current_date, "Absent", self.var_roll_no.get(), self.var_course.get(),self.var_batch.get(),self.var_department.get(),self.var_section.get()))
                 dbConnection.commit()
                 dbConnection.close()
 
                 self.var_name.set("")
                 self.var_roll_no.set("")
-                self.var_semester.set("Select Semester")
+                self.var_section.set("Select Section")
                 self.var_gender.set("Select Gender")
                 self.var_batch.set("Select Batch")
                 self.var_course.set("Select Course")
@@ -127,19 +132,21 @@ class Students_Screen:
                 self.var_dob.set("")
 
                 messagebox.showinfo("Success","Student Added Successfully",parent=self.root)
+                self.status=False
     
             except Exception as es:
                 messagebox.showerror("Error",f"Due to :{str(es)}",parent=self.root)
-
+        else : 
+            messagebox.showwarning("Caution","Please take photo samples first")
        
        
     def clearFields(self):
-            if self.var_department.get()=="Select Department" and self.var_name.get()=="" and self.var_batch.get()=="Select Batch" and self.var_semester.get()=="Select Semester" and self.var_course.get()=="Select Course" and self.var_roll_no.get()=="" and self.var_dob.get()=="" and self.var_gender.get()=="Select Gender":
+            if self.var_department.get()=="Select Department" and self.var_name.get()=="" and self.var_batch.get()=="Select Batch" and self.var_section.get()=="Select Section" and self.var_course.get()=="Select Course" and self.var_roll_no.get()=="" and self.var_dob.get()=="" and self.var_gender.get()=="Select Gender":
               messagebox.showinfo("Error","All Fields are already cleared",parent=self.root)
             else :
                 self.var_name.set("")
                 self.var_roll_no.set("")
-                self.var_semester.set("Select Semester")
+                self.var_section.set("Select Section")
                 self.var_gender.set("Select Gender")
                 self.var_batch.set("Select Batch")
                 self.var_course.set("Select Course")
@@ -155,7 +162,7 @@ class Students_Screen:
         # add_student_icon = Label(self.canvas, image=self.icon)
         # add_student_icon.place(x=1000, y=150)
     def generateDataSet(self):
-        if self.var_department.get()=="Select Department" or self.var_name.get()=="" or self.var_batch.get()=="Select Batch" or self.var_semester.get()=="Select Semester" or self.var_course.get()=="Select Course" or self.var_roll_no.get()=="" or self.var_dob.get()=="" or self.var_gender.get()=="":
+        if self.var_department.get()=="Select Department" or self.var_name.get()=="" or self.var_batch.get()=="Select Batch" or self.var_section.get()=="Select Section" or self.var_course.get()=="Select Course" or self.var_roll_no.get()=="" or self.var_dob.get()=="" or self.var_gender.get()=="":
             messagebox.showerror("Error","First fill out all the fields then take picture",parent=self.root)
         else:
             try:
@@ -189,6 +196,7 @@ class Students_Screen:
                 cap.release()    
                 cv2.destroyAllWindows()
                 messagebox.showinfo("Result","Generating Dataset Completed!")
+                self.status=True
             
             except Exception as es:
                 messagebox.showerror("Error",f"Due to :{str(es)}",parent=self.root)

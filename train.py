@@ -15,11 +15,21 @@ class train:
         self.root.geometry("1530x790+0+0")
         self.root.title("Train data set")
 
-        self.title = Label(self.root, text="TRAIN DATA SET", font=("times new roman", 45, "bold"), bg="#088F8F", fg="white")
+        self.title = Label(self.root, text="TRAIN DATA SET", font=("times new roman", 45, "bold"), bg="light blue", fg="black")
         self.title.place(x=0, y=0, width=1530, height=100)
 
-        btn1=Button(self.root,text="Train Data",command=self.train_classifier,cursor="hand2",font=("times new roman",15,"bold"),width=12,bg="#088F8F",fg="white")  
-        btn1.place(x=0,y=380,width=1530,height=60)
+        img = Image.open("trainingdata.jpeg")
+        img = img.resize((300, 300))
+        self.photoimg = ImageTk.PhotoImage(img)
+
+        lbl = Label(self.root, image=self.photoimg)
+        lbl.place(x=590, y=250, width=300, height=300)
+        
+        btn=Button(self.root,text="Train Data",command=self.train_classifier,cursor="hand2",bg="light blue",fg="black",width=23,font=("times new roman", 15, "bold"))
+        btn.place(x=600,y=570,height=50)
+
+       # btn1=Button(self.root,text="Train Data",command=self.train_classifier,cursor="hand2",font=("times new roman",15,"bold"),width=12,bg="#088F8F",fg="white")  
+       # btn1.place(x=0,y=380,width=1530,height=60)
 
 
 

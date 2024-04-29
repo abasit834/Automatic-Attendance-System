@@ -8,6 +8,7 @@ from attedance import Attendance_Screen
 import os
 
 
+
 class Face_Recognition_System:
     def __init__(self, root):
         self.root = root

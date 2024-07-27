@@ -50,7 +50,7 @@ class train:
             cv2.waitKey(1)==13
         ids=np.array(ids)
 
-       # ===Train classifiwe==
+       # ===Train classifier===
         clf = cv2.face.LBPHFaceRecognizer_create()
 
         clf.train(faces,ids)

@@ -41,7 +41,7 @@ class Attendance_Screen:
         label4 = Label(self.canvas, text="Courses", font=("Poppins", 12, "bold"), fg="black")
         label4.place(x=400, y=350)
         courses = ttk.Combobox(self.canvas, textvariable=self.var_course, font=("Poppins", 10), width=17, state="readonly")
-        courses["values"] = ("Select Course", "PF", "OOP", "ICT")
+        courses["values"] = ("Select Course", "PF", "OOP", "ICT","DIP")
         courses.current(0)
         courses.place(x=400, y=380)
 

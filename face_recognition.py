@@ -3,6 +3,8 @@ from PIL import Image, ImageTk
 import cv2
 import mysql.connector
 import datetime
+from tkinter import filedialog
+
 class FaceRecognition:
     def __init__(self, root):
         self.root = root
@@ -75,7 +77,7 @@ class FaceRecognition:
 
         while True:
             ret, img = video_cap.read()
-            draw_boundary(img, faceCascade, 1.1, 10, (255, 25, 255), "Face", clf)
+            draw_boundary(img, faceCascade, 1.1, 8, (255, 25, 255), "Face", clf)
             cv2.imshow("Welcome to Face Recognition", img)
 
             if cv2.waitKey(1) == 13:
@@ -84,7 +86,12 @@ class FaceRecognition:
         print(cursor.rowcount, "record(s) affected")       
         video_cap.release()
         cv2.destroyAllWindows()
+
     
+
+
+
+
 
 if __name__ == "__main__":
     root = Tk()

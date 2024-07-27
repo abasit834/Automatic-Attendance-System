@@ -6,10 +6,12 @@ from train import train
 from face_recognition import FaceRecognition
 from attedance import Attendance_Screen
 import os
+import cv2
+import sys
 
 
 
-class Face_Recognition_System:
+class Automatic_Attendance_System:
     def __init__(self, root):
         self.root = root
         self.root.geometry("1530x790+0+0")
@@ -117,16 +119,16 @@ class Face_Recognition_System:
         b1.place(x=800,y=580,width=220,height=40) 
 
 
-         #Exit button
+        #Exit button
         img8 = Image.open(r"exit.jpg")
         img8 = img8.resize((220, 220))  # Resize the image to fit window
         self.photoimg8 = ImageTk.PhotoImage(img8)
 
-        b1= Button(bg_img,image=self.photoimg8,cursor="hand2")
+        b1= Button(bg_img,image=self.photoimg8,command=self.exit,cursor="hand2")
         b1.place(x=1100,y=380,width=220,height=220) 
 
         
-        b1= Button(bg_img,text="Exit",cursor="hand2",font=("times new roman", 15, "bold"), bg="light blue", fg="black")
+        b1= Button(bg_img,text="Exit",command=self.exit,cursor="hand2",font=("times new roman", 15, "bold"), bg="light blue", fg="black")
         b1.place(x=1100,y=580,width=220,height=40) 
 
 
@@ -153,13 +155,15 @@ class Face_Recognition_System:
         self.new_windwow=Toplevel(self.root)
         self.app=FaceRecognition(self.new_windwow)
 
-
-
+    def exit(self):
+        cv2.destroyAllWindows()
+        sys.exit()
+    
 
 if __name__ == "__main__":
     root = Tk()
-    obj = Face_Recognition_System(root)
+    obj = Automatic_Attendance_System(root)
     root.mainloop()
 
- 
+
 

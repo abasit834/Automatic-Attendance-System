@@ -5,7 +5,7 @@ from tkinter import messagebox
 import mysql.connector  
 import cv2
 import datetime
-
+from tkinter import filedialog
 
 
 class Students_Screen:
@@ -45,7 +45,7 @@ class Students_Screen:
         label2=Label(self.canvas,text="Courses",font=("Poppins",12,"bold"),fg="black")
         label2.place(x=400,y=120)
         courses = ttk.Combobox(self.canvas,textvariable=self.var_course, font=("Poppins",10), width=17,state="readonly")
-        courses["values"]=("Select Course","PF","OOP","ICT")
+        courses["values"]=("Select Course","PF","OOP","ICT","DIP")
         courses.current(0)
         courses.place(x=400, y=150) 
 
@@ -101,7 +101,7 @@ class Students_Screen:
         picbtn.place(x=200,y=550)
 
 
-        updbtn=Button(self.canvas,text="Update Picture",font=("Poppins",13,"bold"),width=15,bg="#088F8F",fg="white")
+        updbtn=Button(self.canvas,text="Upload Picture",command=self.open_image,font=("Poppins",13,"bold"),width=15,bg="#088F8F",fg="white")
         updbtn.place(x=350,y=550)
 
         clear_fields=Button(self.canvas,text="Clear Fields",command=self.clearFields,font=("Poppins",13,"bold"),width=12,bg="#088F8F",fg="white")
@@ -161,6 +161,51 @@ class Students_Screen:
         # self.icon = ImageTk.PhotoImage(img)  # Convert the img to Tkinter PhotoImage
         # add_student_icon = Label(self.canvas, image=self.icon)
         # add_student_icon.place(x=1000, y=150)
+    def open_image(self):
+        file_path = filedialog.askopenfilename()
+        if file_path:
+            print(file_path)
+        try:
+            # Load face classifier
+            face_classifier = cv2.CascadeClassifier("haarcascade_frontalface_default.xml")
+
+            # Function to crop face from image
+            def face_cropped(img):
+                gray = cv2.cvtColor(img, cv2.COLOR_BGR2BGRA)
+                faces = face_classifier.detectMultiScale(gray, 1.3, 5)
+                for (x, y, w, h) in faces:
+                    face_cropped = img[y:y+h, x:x+w]
+                    return face_cropped
+
+            # Read the image
+            my_frame = cv2.imread(file_path)
+            
+            # Loop to capture 100 samples
+            img_id = 0
+            while img_id < 100:
+                if face_cropped(my_frame) is not None:
+                    img_id += 1
+                    face = cv2.resize(face_cropped(my_frame), (450, 450))
+                    face = cv2.cvtColor(face, cv2.COLOR_BGR2BGRA)
+                    file_name_path = "data/user." + str(self.var_roll_no.get()) + "." + str(img_id) + ".jpg"
+                    cv2.imwrite(file_name_path, face)
+                    cv2.putText(face, str(img_id), (50, 50), cv2.FONT_HERSHEY_COMPLEX, 2, (0, 255, 0), 2)
+                    cv2.imshow("Cropped Face", face)
+                    cv2.waitKey(100)  # Delay for visualization
+                else:
+                    print("No face detected")
+                    messagebox.showwarning("Warning", "No Face Found")
+                    break
+
+            cv2.destroyAllWindows()
+            messagebox.showinfo("Result", "Generating Dataset Completed!")
+            self.status = True
+
+        except Exception as es:
+            messagebox.showerror("Error", f"Due to :{str(es)}", parent=self.root)
+
+
+
     def generateDataSet(self):
         if self.var_department.get()=="Select Department" or self.var_name.get()=="" or self.var_batch.get()=="Select Batch" or self.var_section.get()=="Select Section" or self.var_course.get()=="Select Course" or self.var_roll_no.get()=="" or self.var_dob.get()=="" or self.var_gender.get()=="":
             messagebox.showerror("Error","First fill out all the fields then take picture",parent=self.root)
